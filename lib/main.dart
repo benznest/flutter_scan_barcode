@@ -26,17 +26,16 @@ class _MyAppState extends State<MyApp> {
     return new MaterialApp(
       home: new Scaffold(
           appBar: new AppBar(
-            title: new Text('Barcode Scanner Example'),
+            title: new Text('My Barcode Scanner'),
+            actions: <Widget>[IconButton(icon: Icon(Icons.camera_alt), onPressed: scan)],
           ),
-          body: new Center(
-            child: new Column(
+          body: Center(
+            child: Column(
               children: <Widget>[
-                new Container(
-                  child: new MaterialButton(
-                      onPressed: scan, child: new Text("Scan")),
-                  padding: const EdgeInsets.all(8.0),
+                Container(
+                  padding: EdgeInsets.all(8.0),
                 ),
-                new Text(barcode),
+                Text(barcode, style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold)),
               ],
             ),
           )),
@@ -49,16 +48,14 @@ class _MyAppState extends State<MyApp> {
       setState(() => this.barcode = barcode);
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
-        setState(() {
-          this.barcode = 'The user did not grant the camera permission!';
-        });
+        // The user did not grant the camera permission.
       } else {
-        setState(() => this.barcode = 'Unknown error: $e');
+        // Unknown error.
       }
-    } on FormatException{
-      setState(() => this.barcode = 'null (User returned using the "back"-button before scanning anything. Result)');
+    } on FormatException {
+      // User returned using the "back"-button before scanning anything.
     } catch (e) {
-      setState(() => this.barcode = 'Unknown error: $e');
+      // Unknown error.
     }
   }
 }
